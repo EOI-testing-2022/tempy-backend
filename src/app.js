@@ -6,6 +6,7 @@ import { PositionServiceIpApi } from "./services/PositionServiceIpApi.js";
 import { TemperatureServiceOpenMeteo } from "./services/TemperatureServiceOpenMeteo.js";
 import { GetTemperatureController } from "./controllers/GetTemperatureController.js";
 import { InvalidIpError } from "./errors/InvalidIpError.js";
+import { getComments, insertComment } from "./repository/comments.repository.js";
 
 const app = new Koa();
 const router = new Router();
@@ -21,6 +22,8 @@ const getTemperatureController = new GetTemperatureController(
 );
 
 router.get("/temperature", getTemperatureController.execute);
+router.get("/comments", async () => await getComments());
+router.post("/comments", async () => await insertComment({name: 'test', description: 'test'}));
 
 app
   .use(async (ctx, next) => {
